@@ -13,9 +13,9 @@ module Implements
     def implements(iface, options = {}, &block)
       fail TypeError unless iface.kind_of?(Interface)
 
-      names = Array(options.fetch(:as) { implementation_descriptors(iface) })
-      names << :auto if options.fetch(:auto, true)
-      iface.register(self, names: names, &block)
+      groups = Array(options.fetch(:as) { implementation_descriptors(iface) })
+      groups << :auto if options.fetch(:auto, true)
+      iface.register(self, groups: groups, &block)
 
       include iface
     end
