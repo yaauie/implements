@@ -1,6 +1,9 @@
 # Implements
 
-TODO: Write a gem description
+`Implements` is a tool for building modular libraries and tools as
+interfaces, for implementing those interfaces, and ensuring that
+consumers are able to load the best available implementation at
+runtime.
 
 ## Installation
 
@@ -90,13 +93,13 @@ given their environment and the object(s) passed to `#initialize`, without
 having to know anything about the implementations themselves:
 
 ``` ruby
-source_redis = Redis.new(port: 9736) # a scanner-compatible redis process
+source_redis = Redis.new(port: 9736) # a scanner-compatible redis process (>= 2.7.105)
 key_emitter = RedisCopy::KeyEmitter.implementation.new(source_redis)
 # => <RedisCopy::KeyEmitter::Scanner: ... >
 key_emitter.keys('schedule:*').to_enum
 # => <Enumerator ...>
 
-source_redis = Redis.new(port: 9737) # a scanner-incompatible redis process
+source_redis = Redis.new(port: 9737) # a scanner-incompatible redis process (< 2.7.105)
 key_emitter = RedisCopy::KeyEmitter.implementation.new(source_redis)
 # => <RedisCopy::KeyEmitter::Default: ... >
 key_emitter.keys('schedule:*').to_enum
@@ -131,7 +134,8 @@ And implementations can be added which are not in the auto load-order and have
 to be explicitly asked for:
 
 ``` ruby
-# Like this insane whack-a-mole implementation:
+# Like this insane whack-a-mole implementation,
+# Which we wouldn't want anyone to accidentally use:
 class RedisCopy::KeyEmitter::WhackAMole
   Implements RedisCopy::KeyEmitter, auto: false
 
