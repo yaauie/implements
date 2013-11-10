@@ -21,18 +21,11 @@ module Implements
     end
 
     def find_and_instantiate(selector, *args, &block)
-      find(selector, *args).new(*args, &block)
+      implementation(selector).new(*args, &block)
     end
 
-    private
-
-    def find(selectors, *args)
-      @implementations.elements(selectors).each do |config|
-        next unless config.check?(*args)
-        return config.implementation
-      end
-
-      fail(Implementation::NotFound, "#{self}: no compatible implementation.")
+    def implementation(selectors = :auto)
+      Implementation::Registry::Finder.new(@implementations, selectors)
     end
   end
 end
