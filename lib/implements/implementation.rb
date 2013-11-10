@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'active_support/inflector'
+
 require_relative 'implementation/registry'
 
 module Implements
@@ -15,6 +17,7 @@ module Implements
 
       groups = Array(options.fetch(:as) { implementation_descriptors(iface) })
       groups << :auto if options.fetch(:auto, true)
+      groups << :default unless block_given?
       iface.register_implementation(self, groups: groups, &block)
 
       include iface
@@ -22,7 +25,7 @@ module Implements
 
     def implementation_descriptors(interface)
       name = self.name
-      name && name.sub(Regexp.new("^#{interface}::"), '')
+      name && name.sub(Regexp.new("^#{interface}::"), '').underscore.dasherize
     end
   end
 end

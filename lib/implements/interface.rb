@@ -24,7 +24,8 @@ module Implements
       implementation(selector).new(*args, &block)
     end
 
-    def implementation(selectors = :auto)
+    def implementation(*selectors)
+      selectors << :auto if selectors.empty?
       Implementation::Registry::Finder.new(@implementations, selectors)
     end
   end

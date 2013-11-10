@@ -48,6 +48,15 @@ describe Implements do
           def wobble() :large end
         end
       end
+      let!(:odd_implementation) do
+        Class.new do
+          extend(Implements::Implementation)
+          implements ::Widget, as: :odd do |number|
+            number.odd?
+          end
+          def wobble() :odd end
+        end
+      end
 
       context 'Interface#new' do
         let(:result) { interface.new(input) }
@@ -63,7 +72,7 @@ describe Implements do
         end
 
         context 'matching the small implementation' do
-          let(:input) { 1 }
+          let(:input) { 2 }
           it 'should return the small implementation' do
             expect(result).to be_an_instance_of small_implementation
           end
@@ -78,6 +87,60 @@ describe Implements do
           end
           it { should be_a Widget }
           its(:wobble) { should be :interface } # ensure proper inheritance
+        end
+
+        context '#implementation.new' do
+          let(:result) { interface.implementation(*selectors).new(input) }
+          subject { result }
+          context 'specifying the large implementation' do
+            let(:selectors) { [:large] }
+            context 'not matching the large implementation' do
+              let(:input) { 2 }
+              it 'should raise an appropriate exception' do
+                expect do
+                  result
+                end.to raise_error Implements::Implementation::NotFound
+              end
+            end
+            context 'matching the large implementation' do
+              let(:input) { 10_000_000 }
+              it 'should return the large implementation' do
+                expect(result).to be_an_instance_of large_implementation
+              end
+            end
+          end
+          context 'specifying the small implementation' do
+            let(:selectors) { [:small] }
+            context 'not matching the small implementation' do
+              let(:input) { 1_000_000 }
+              it 'should raise an appropriate exception' do
+                expect do
+                  result
+                end.to raise_error Implements::Implementation::NotFound
+              end
+            end
+            context 'matching the small implementation' do
+              let(:input) { 2 }
+              it 'should return the small implementation' do
+                expect(result).to be_an_instance_of small_implementation
+              end
+            end
+          end
+          context 'when multiple implementations match' do
+            let(:input) { 7 }
+            context 'specifying the small or odd implementation' do
+              let(:selectors) { [:small, :odd] }
+              it 'should favor small' do
+                expect(result).to be_an_instance_of small_implementation
+              end
+            end
+            context 'specifying the odd or small implementation' do
+              let(:selectors) { [:odd, :small] }
+              it 'should favor odd' do
+                expect(result).to be_an_instance_of odd_implementation
+              end
+            end
+          end
         end
       end
     end

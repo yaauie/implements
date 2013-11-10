@@ -11,7 +11,8 @@ module Implements
     attr_reader :implementation
 
     def match?(selector)
-      true
+      selector = selector.to_s if selector.kind_of?(Symbol)
+      @options[:groups].map(&:to_s).any? { |group| selector === group }
     end
 
     def check?(*args)
