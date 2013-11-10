@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-`Implements` was created as a dependency of my [`redis-copy`][] gem, which
+`Implements` was created as a dependency of my [redis-copy][] gem, which
 provides multiple implementations of each of multiple interfaces in order to
 provide support for new features in redis, while falling back gracefully
 (sometimes multiple steps) to less-optimal implementations when
@@ -26,7 +26,7 @@ the underlying support is not present.
 
 [redis-copy]: https://github.com/yaauie/redis-copy
 
-The goal of this library in particular is to provide an implementation
+The goal of the `implements` gem in particular is to provide an implementation
 registry that is attached to the interface, and can be used to provide
 the best-possible implementation for a given scenario. It also allows
 third-party libraries to provide their own implementations of an interface
@@ -127,12 +127,13 @@ key_emitter = RedisCopy::KeyEmitter.implementation(:scanner, :auto).new(source_r
 # => <RedisCopy::KeyEmitter::Default: ... >
 ```
 
-And implementations can be added which are not in the auto load order and have
+And implementations can be added which are not in the auto load-order and have
 to be explicitly asked for:
 
 ``` ruby
+# Like this insane whack-a-mole implementation:
 class RedisCopy::KeyEmitter::WhackAMole
-  Implements RedisCopy::KeyEmitter, as: 'shuffle', auto: false
+  Implements RedisCopy::KeyEmitter, auto: false
 
   def keys(pattern = '*')
     return enum_for(__method__, pattern) unless block_given?
