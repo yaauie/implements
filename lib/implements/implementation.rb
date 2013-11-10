@@ -15,7 +15,7 @@ module Implements
 
       groups = Array(options.fetch(:as) { implementation_descriptors(iface) })
       groups << :auto if options.fetch(:auto, true)
-      iface.register(self, groups: groups, &block)
+      iface.register_implementation(self, groups: groups, &block)
 
       include iface
     end

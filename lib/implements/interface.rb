@@ -12,7 +12,7 @@ module Implements
                                  Implementation::Registry.new(base))
     end
 
-    def register(implementation, options, &block)
+    def register_implementation(implementation, options, &block)
       @implementations.register(implementation, options, block)
     end
 
