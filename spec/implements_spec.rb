@@ -88,7 +88,7 @@ describe Implements do
         subject { result }
 
         let(:input) { 1_000 }
-        it 'should return the default implementation' do
+        it 'should raise an appropriate exception' do
           expect { result }.to raise_error Implements::Implementation::NotFound
         end
       end
