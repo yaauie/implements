@@ -13,7 +13,9 @@ module Implements
     private
 
     def implements(iface, options = {}, &block)
-      fail TypeError unless iface.kind_of?(Interface)
+      unless iface.kind_of?(Interface)
+        fail(TypeError, 'Argument must be a Implements::Interface')
+      end
 
       groups = Array(options.fetch(:as) { implementation_descriptors(iface) })
       groups << :auto if options.fetch(:auto, true)

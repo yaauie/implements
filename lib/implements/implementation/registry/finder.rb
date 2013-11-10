@@ -15,7 +15,7 @@ module Implements
       end
 
       fail(Implementation::NotFound,
-           "#{self}: no compatible implementation.")
+           "no compatible implementation for #{self}")
     end
 
     def new(*args, &block)

@@ -12,6 +12,7 @@ module Implements
 
     def match?(selector)
       selector = selector.to_s if selector.kind_of?(Symbol)
+      selector = selector.dasherize if selector.kind_of?(String)
       @options[:groups].map(&:to_s).any? { |group| selector === group }
     end
 
