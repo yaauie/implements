@@ -31,7 +31,7 @@ module Implements
       end
 
       fail(Implementation::NotFound,
-           "no compatible implementation for #{self}")
+           "no compatible implementation for #{inspect}")
     end
 
     # @api private
