@@ -4,5 +4,5 @@
 module Implements
   # Implements is Semantically Versioned.
   # @see http://semver.org
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
 end
