@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Ryan Biesemeyer']
   spec.email         = ['ryan@simplymeasured.com']
   spec.summary       = 'A tool for building and implementing interfaces.'
-  spec.description   = <<-EODESC.gsub(/^[\w]+/, ' ').squeeze
+  spec.description   = <<-EODESC.gsub(/^[\w]+/, ' ').squeeze(' ')
     Implements is a tool for building modular libraries and tools as
     interfaces, for implementing those interfaces, and ensuring that
     consumers are able to load the best available implementation at
